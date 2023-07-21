@@ -1,11 +1,16 @@
 <script>
-  // your script goes here
+  import FaPlus from "svelte-icons/fa/FaPlus.svelte";
 </script>
 
 <div class="game-container">
   <div class="answers-container">
     <div class="answer stance selector">Stance</div>
     <div class="answer trick selector">Trick</div>
+    <div class="answer trick selector">
+      <div class="plus-icon">
+        <FaPlus />
+      </div>
+    </div>
   </div>
 
   <div class="selectors-container">
@@ -68,5 +73,9 @@
     color: var(--text-color);
     border: 1px solid var(--text-color);
     border-radius: 5px;
+  }
+
+  .plus-icon {
+    width: 15px;
   }
 </style>
