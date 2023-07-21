@@ -15,6 +15,7 @@
   let selectors = [...stances, ...tricks];
 
   let placeholders = ["Stance", "Trick"];
+  $: shouldHidePlus = placeholders.length >= 4;
 
   //return the first answer that has the placeholder class
   const getFirstAnswer = (): Element | null => {
@@ -33,6 +34,7 @@
   //remove placeholder class from given element and change text to given text
   const setAnswer = (answer: string, element: Element) => {
     element.classList.remove("placeholder");
+    element.classList.add("answer");
     element.textContent = answer;
   };
 
@@ -57,21 +59,57 @@
     selectors.splice(clickedSelectorIndex, 1);
     selectors = [...selectors];
   };
+
+  //if the clicked answer is a placeholder and either the third or fourth answer remove the answer and add the plus button back
+  const answerClickHandler = (e: Event, index: number) => {
+    const target = e.target as HTMLButtonElement;
+    if (index > 1 && target.classList.contains("placeholder")) {
+      placeholders.splice(index, 1);
+      placeholders = [...placeholders];
+    }
+
+    if (target.classList.contains("answer")) {
+      if (!target.textContent) return;
+
+      selectors.push(target.textContent);
+      selectors = [...selectors];
+      target.classList.remove("answer");
+      target.classList.add("placeholder");
+      target.textContent = placeholders[index];
+    }
+  };
+
+  const plusClickHandler = () => {
+    if (placeholders.length >= 4) {
+      return;
+    }
+
+    placeholders.push("Trick");
+    placeholders = [...placeholders];
+  };
 </script>
 
 <div class="game-container">
   <div class="answers-container">
-    {#each placeholders as answer}
-      <button class="placeholder selector">
+    {#each placeholders as answer, index}
+      <button
+        class="placeholder selector"
+        on:click={(e) => answerClickHandler(e, index)}
+      >
         {answer}
       </button>
     {/each}
 
-    <div class="placeholder trick selector" id="plus">
+    <button
+      class="placeholder trick selector"
+      class:hidden={shouldHidePlus}
+      id="plus"
+      on:click={plusClickHandler}
+    >
       <div class="plus-icon">
         <FaPlus />
       </div>
-    </div>
+    </button>
   </div>
 
   <div class="selectors-container">
@@ -128,9 +166,12 @@
     border: 1px solid var(--text-color);
     border-radius: 5px;
   }
-
   .plus-icon {
     width: 15px;
+  }
+
+  .hidden {
+    display: none;
   }
 
   button {
