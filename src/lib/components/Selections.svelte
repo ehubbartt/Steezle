@@ -1,12 +1,73 @@
-<script>
+<script lang="ts">
   import FaPlus from "svelte-icons/fa/FaPlus.svelte";
+
+  let stances = ["Regular", "Fakie", "Nollie", "Switch"];
+  let tricks = [
+    "kickflip",
+    "ollie",
+    "laser flip",
+    "late flip",
+    "kickflip",
+    "ollie",
+    "late heelflip",
+    "impossible",
+  ];
+  let selectors = [...stances, ...tricks];
+
+  let placeholders = ["Stance", "Trick"];
+
+  //return the first answer that has the placeholder class
+  const getFirstAnswer = (): Element | null => {
+    const answers = document.querySelectorAll(".answers-container > *");
+    for (let i = 0; i < answers.length; i++) {
+      if (
+        answers[i].classList.contains("placeholder") &&
+        !answers[i].id.includes("plus")
+      ) {
+        return answers[i];
+      }
+    }
+    return null;
+  };
+
+  //remove placeholder class from given element and change text to given text
+  const setAnswer = (answer: string, element: Element) => {
+    element.classList.remove("placeholder");
+    element.textContent = answer;
+  };
+
+  const selectorClickHandler = (e: Event) => {
+    const clickedSelector = e.target as HTMLButtonElement;
+
+    const firstAnswer = getFirstAnswer();
+
+    if (!firstAnswer) {
+      return;
+    }
+    if (!clickedSelector.textContent) {
+      return;
+    }
+
+    setAnswer(clickedSelector.textContent, firstAnswer);
+
+    const clickedSelectorIndex = selectors.indexOf(
+      clickedSelector.textContent.trim()
+    );
+
+    selectors.splice(clickedSelectorIndex, 1);
+    selectors = [...selectors];
+  };
 </script>
 
 <div class="game-container">
   <div class="answers-container">
-    <div class="answer stance selector">Stance</div>
-    <div class="answer trick selector">Trick</div>
-    <div class="answer trick selector">
+    {#each placeholders as answer}
+      <button class="placeholder selector">
+        {answer}
+      </button>
+    {/each}
+
+    <div class="placeholder trick selector" id="plus">
       <div class="plus-icon">
         <FaPlus />
       </div>
@@ -14,18 +75,11 @@
   </div>
 
   <div class="selectors-container">
-    <div class="selector">Regular</div>
-    <div class="selector">Fakie</div>
-    <div class="selector">Nollie</div>
-    <div class="selector">Switch</div>
-    <div class="selector">kickflip</div>
-    <div class="selector">ollie</div>
-    <div class="selector">laser flip</div>
-    <div class="selector">late flip</div>
-    <div class="selector">kickflip</div>
-    <div class="selector">ollie</div>
-    <div class="selector">late heelflip</div>
-    <div class="selector">impossible</div>
+    {#each selectors as selector}
+      <button class="selector" on:click={selectorClickHandler}>
+        {selector}
+      </button>
+    {/each}
   </div>
 </div>
 
@@ -68,7 +122,7 @@
     color: var(--background-color);
   }
 
-  .answer {
+  .placeholder {
     background: var(--background-color);
     color: var(--text-color);
     border: 1px solid var(--text-color);
@@ -77,5 +131,15 @@
 
   .plus-icon {
     width: 15px;
+  }
+
+  button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
   }
 </style>
