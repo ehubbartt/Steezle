@@ -119,6 +119,20 @@
       </button>
     {/each}
   </div>
+
+  <div class="mistakes-container">
+    <span>Mistakes Remaining: </span>
+    <div class="circle" />
+    <div class="circle" />
+    <div class="circle" />
+    <div class="circle" />
+  </div>
+
+  <div class="game-btn-container">
+    <button class="game-btn">Shuffle</button>
+    <button class="game-btn">Deselect all</button>
+    <button class="game-btn">Submit</button>
+  </div>
 </div>
 
 <style>
@@ -172,6 +186,42 @@
 
   .hidden {
     display: none;
+  }
+
+  .game-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+  }
+
+  .game-btn {
+    width: 150px;
+    height: 75px;
+    background: rgb(90, 114, 155);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 25px;
+    cursor: pointer;
+    color: var(--text-color);
+  }
+
+  .mistakes-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    color: var(--text-color);
+  }
+
+  .circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: var(--text-color);
+    margin: 5px;
   }
 
   button {
