@@ -98,6 +98,21 @@
     }
     selectors = [...selectors];
   };
+
+  const handleDeselectAll = () => {
+    const answers = document.querySelectorAll(".answers-container > *");
+    for (let i = 0; i < answers.length; i++) {
+      if (
+        answers[i].classList.contains("answer") &&
+        !answers[i].id.includes("plus")
+      ) {
+        answers[i].classList.remove("answer");
+        answers[i].classList.add("placeholder");
+        answers[i].textContent = placeholders[i];
+      }
+    }
+    selectors = [...stances, ...tricks];
+  };
 </script>
 
 <div class="game-container">
@@ -141,7 +156,7 @@
 
   <div class="game-btn-container">
     <button class="game-btn" on:click={shuffleSelections}>Shuffle</button>
-    <button class="game-btn">Deselect all</button>
+    <button class="game-btn" on:click={handleDeselectAll}>Deselect all</button>
     <button class="game-btn">Submit</button>
   </div>
 </div>
