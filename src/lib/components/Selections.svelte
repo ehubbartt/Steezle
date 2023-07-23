@@ -1,6 +1,8 @@
 <script lang="ts">
   import FaPlus from "svelte-icons/fa/FaPlus.svelte";
 
+  const answer = ["Fakie", "kickflip"];
+
   let stances = ["Regular", "Fakie", "Nollie", "Switch"];
   let tricks = [
     "kickflip",
@@ -113,6 +115,26 @@
     }
     selectors = [...stances, ...tricks];
   };
+
+  //checks to see if the answer is correct
+  const submitAnswer = () => {
+    const answers = document.querySelectorAll(".answers-container > *");
+    let answerString = "";
+    for (let i = 0; i < answers.length; i++) {
+      if (
+        answers[i].classList.contains("answer") &&
+        !answers[i].id.includes("plus")
+      ) {
+        answerString += answers[i].textContent?.trim().toLowerCase();
+      }
+    }
+
+    if (answerString === answer.join("").toLowerCase()) {
+      alert("Correct!");
+    } else {
+      alert("Incorrect!");
+    }
+  };
 </script>
 
 <div class="game-container">
@@ -157,7 +179,7 @@
   <div class="game-btn-container">
     <button class="game-btn" on:click={shuffleSelections}>Shuffle</button>
     <button class="game-btn" on:click={handleDeselectAll}>Deselect all</button>
-    <button class="game-btn">Submit</button>
+    <button class="game-btn" on:click={submitAnswer}>Submit</button>
   </div>
 </div>
 
