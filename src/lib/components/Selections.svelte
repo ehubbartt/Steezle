@@ -87,6 +87,17 @@
     placeholders.push("Trick");
     placeholders = [...placeholders];
   };
+
+  const shuffleSelections = () => {
+    for (let i = selectors.length - 1; i > 0; i--) {
+      const randomIndex = Math.floor(Math.random() * (i + 1));
+      [selectors[i], selectors[randomIndex]] = [
+        selectors[randomIndex],
+        selectors[i],
+      ];
+    }
+    selectors = [...selectors];
+  };
 </script>
 
 <div class="game-container">
@@ -129,7 +140,7 @@
   </div>
 
   <div class="game-btn-container">
-    <button class="game-btn">Shuffle</button>
+    <button class="game-btn" on:click={shuffleSelections}>Shuffle</button>
     <button class="game-btn">Deselect all</button>
     <button class="game-btn">Submit</button>
   </div>
